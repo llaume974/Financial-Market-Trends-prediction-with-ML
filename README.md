@@ -4,7 +4,7 @@
 **Program:** ESILV IF2 — Machine Learning Project  
 **Date:** December 26, 2023
 
-> This README is a Markdown adaptation of the report “Prédiction des tendances de marchés boursiers / Predicting Financial Market Trends with ML.” :contentReference[oaicite:0]{index=0}
+> This README is a Markdown adaptation of the report “Prédiction des tendances de marchés boursiers / Predicting Financial Market Trends with ML.”
 
 ---
 
