@@ -10,7 +10,7 @@
 
 ## Abstract
 
-This project builds supervised models to **predict next-day stock direction** (up = 1, down = 0) from historical OHLCV data. We compare a **Random Forest classifier** and a **Long Short-Term Memory (LSTM)** network, and outline an end-to-end pipeline: data collection (Yahoo Finance), cleaning & scaling, feature engineering, model training, evaluation, persistence, and a simple **news-headline sentiment** module (NLTK) to enrich signals. While both models beat random (≈50%), accuracy remains modest (≈53–56%), motivating further work on features and multimodal signals. :contentReference[oaicite:1]{index=1}
+This project builds supervised models to **predict next-day stock direction** (up = 1, down = 0) from historical OHLCV data. We compare a **Random Forest classifier** and a **Long Short-Term Memory (LSTM)** network, and outline an end-to-end pipeline: data collection (Yahoo Finance), cleaning & scaling, feature engineering, model training, evaluation, persistence, and a simple **news-headline sentiment** module (NLTK) to enrich signals. While both models beat random (~50%), accuracy remains modest (~53–56%), motivating further work on features and multimodal signals.
 
 ---
 
@@ -32,7 +32,7 @@ This project builds supervised models to **predict next-day stock direction** (u
 - **Task:** Binary classification — predict next-day direction of a stock.  
 - **Inputs (features):** OHLCV, amplitude, “price_yesterday”, engineered indicators.  
 - **Target:** `Target ∈ {0,1}` (down/up).  
-- **Metrics:** Accuracy, precision, recall, F1, confusion matrix, AUC (where relevant). :contentReference[oaicite:2]{index=2}
+- **Metrics:** Accuracy, precision, recall, F1, confusion matrix, AUC (where relevant).
 
 ---
 
@@ -44,7 +44,7 @@ This project builds supervised models to **predict next-day stock direction** (u
 - **Feature Study:**  
   - **Pearson correlation** (close vs lag-1 close): **0.9958 (p=0.0)** → strong temporal dependence.  
   - Example importances (RF): `Price_Yesterday (0.225)`, `Adj Close (0.155)`, `Close (0.154)`, `Open (0.133)`, `High (0.116)`, `Low (0.112)`, `Volume (0.106)`.  
-  - **PCA** (dimensionality reduction) baseline accuracy: **0.476**. :contentReference[oaicite:3]{index=3}
+  - **PCA** (dimensionality reduction) baseline accuracy: **0.476**.
 
 ---
 
@@ -55,7 +55,7 @@ Two families were considered:
 1) **Time-series regression / density ideas** (ARIMA; AMISE/LOOCV bandwidth logic for KDE) — useful for distributional insight and volatility/shape control, but **not the focus** of the final classifier benchmarks.  
 2) **Supervised ML on sequences** (chosen):  
    - **Random Forest Classifier** — robust to nonlinearity, gives feature importances, reduces overfitting risk vs single trees.  
-   - **LSTM network** — captures long-range temporal dependencies; stacked LSTM + Dropout; binary cross-entropy with Adam. :contentReference[oaicite:4]{index=4}
+   - **LSTM network** — captures long-range temporal dependencies; stacked LSTM + Dropout; binary cross-entropy with Adam.
 
 ---
 
@@ -68,7 +68,7 @@ Two families were considered:
 3. **Hyperparameters:** Grid/Random search where feasible; early stopping (for deep model).  
 4. **Evaluation:** Accuracy, classification report; confusion matrix analysis.  
 5. **Persistence:** Save model with **joblib**; reload for scheduled predictions.  
-6. **Operational loop:** Generate latest features, load model, predict, report **last 10 periods** with **direction + confidence**. :contentReference[oaicite:5]{index=5}
+6. **Operational loop:** Generate latest features, load model, predict, report **last 10 periods** with **direction + confidence**.
 
 ---
 
@@ -86,9 +86,9 @@ Two families were considered:
   - Class 1 — *precision 0.51*, *recall 0.67*, *f1 0.58* (support 70)  
   - Macro avg: 0.55 / 0.55 / 0.56 (N=151)
 
-**Simple backtest (≈200 days):** accuracy ~**55.6%**, with ~**55.1%** correct vs **44.1%** incorrect.  
+**Simple backtest (~200 days):** accuracy ~**55.6%**, with ~**55.1%** correct vs **44.1%** incorrect.  
 **Granger causality (lags 1–2):** p-values ≫ 0.05 → lagged prices alone **not sufficient** predictors.  
-**Takeaway:** Both models edge past chance but remain modest; risk of **false positives/negatives** is non-trivial. :contentReference[oaicite:6]{index=6}
+**Takeaway:** Both models edge past chance but remain modest; risk of **false positives/negatives** is non-trivial.
 
 ---
 
@@ -98,7 +98,7 @@ Two families were considered:
 - **Text & sentiment:** Extend from titles to **full articles**, weight by event materiality (e.g., *CEO resignation* > *store closure*). Build a **news DB** for historical alignment.  
 - **Modeling:** Calibrated probabilistic models; class-imbalance handling; conformal prediction; ensembles (RF + LSTM + gradient boosting).  
 - **Evaluation:** Economic metrics (hit ratio by regime, turnover, transaction costs, drawdown), walk-forward CV.  
-- **Ops:** Monitoring for drift; periodic retraining; better serialization & versioning. :contentReference[oaicite:7]{index=7}
+- **Ops:** Monitoring for drift; periodic retraining; better serialization & versioning.
 
 ---
 
@@ -112,13 +112,12 @@ Two families were considered:
 - nltk (vader_lexicon for sentiment)
 - joblib
 
-
 **Quick start:**
-1. Fetch data with `yfinance` (e.g., AAPL 2020-2022).  
+1. Fetch data with `yfinance` (e.g., AAPL 2020–2022).  
 2. Clean & scale; engineer features (lagged prices, technicals).  
 3. Train **RF** and/or **LSTM**, validate on chronological split.  
 4. Save the best model with **joblib**; schedule periodic inference.  
-5. (Optional) Pull latest Yahoo Finance headlines; score with `nltk.sentiment.SentimentIntensityAnalyzer` and combine with price signal. :contentReference[oaicite:8]{index=8}
+5. (Optional) Pull latest Yahoo Finance headlines; score with `nltk.sentiment.SentimentIntensityAnalyzer` and combine with price signal.
 
 ---
 
@@ -133,5 +132,3 @@ Two families were considered:
   - https://www.nature.com/articles/s41598-021-83247-4  
   - https://arxiv.org/pdf/1909.09586.pdf  
   - https://www.nltk.org/howto/sentiment.html
-
----
